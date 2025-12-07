@@ -220,47 +220,49 @@ class OrderService(
 ---
 
 ### 5.1 Order Service (c4ang-order-service)
-- [ ] `application.yml`에 saga 설정 추가 (`platform.saga.enabled: true`)
-- [ ] `CreateOrderService`에 Saga Tracker 기록 추가
+- [x] `application.yml`에 saga 설정 추가 (`platform.saga.enabled: false`, dev/prod에서 true)
+- [x] `CreateOrderService`에 Saga Tracker 기록 추가
   - Step: `ORDER_CREATED`, Status: `STARTED`
-- [ ] `StockReservedEventHandler`에 기록 추가
+- [x] `OrderEventHandlerService.handleStockReserved`에 기록 추가
   - Step: `STOCK_RESERVED`, Status: `IN_PROGRESS`
-- [ ] `PaymentCompletedEventHandler`에 기록 추가
-  - Step: `PAYMENT_COMPLETED`, Status: `IN_PROGRESS`
-- [ ] `OrderConfirmedEventHandler`에 기록 추가
+- [x] `OrderEventHandlerService.handlePaymentCompleted`에 기록 추가
   - Step: `ORDER_CONFIRMED`, Status: `COMPLETED`
-- [ ] `OrderCancelledEventHandler`에 기록 추가
+- [x] `OrderEventHandlerService.handleStockReservationFailed`에 기록 추가
+  - Step: `STOCK_RESERVATION_FAILED`, Status: `FAILED`
+- [x] `OrderEventHandlerService.handlePaymentFailed/Cancelled`에 기록 추가
   - Step: `ORDER_CANCELLED`, Status: `FAILED`
-- [ ] `OrderTimeoutEventHandler`에 기록 추가
-  - Step: `ORDER_TIMEOUT`, Status: `FAILED`
-- [ ] 단위 테스트 추가/수정
-- [ ] 통합 테스트 추가/수정
+- [x] `OrderEventHandlerService.handlePaymentInitializationFailed/CompletionCompensate`에 기록 추가
+  - Step: `COMPENSATION_ORDER`, Status: `COMPENSATED`
+- [ ] 단위 테스트 추가/수정 (통합 테스트 제외)
+- [ ] 통합 테스트 추가/수정 (통합 테스트 제외)
 
 ### 5.2 Product Service (c4ang-product-service)
-- [ ] `application.yml`에 saga 설정 추가 (`platform.saga.enabled: true`)
-- [ ] `StockReservationService`에 Saga Tracker 기록 추가
+- [x] `application.yml`에 saga 설정 추가 (`platform.saga.enabled: false`, dev/prod에서 true)
+- [x] `StockReservationService`에 Saga Tracker 기록 추가
   - Step: `STOCK_RESERVATION`, Status: `IN_PROGRESS`
   - Step: `STOCK_RESERVED`, Status: `COMPLETED` (성공 시)
   - Step: `STOCK_RESERVATION_FAILED`, Status: `FAILED` (실패 시)
-- [ ] `StockReleaseService`에 기록 추가 (보상)
+- [x] `StockReservationService.rollbackReservation`에 기록 추가 (보상)
   - Step: `STOCK_RELEASED`, Status: `COMPENSATED`
-- [ ] 단위 테스트 추가/수정
-- [ ] 통합 테스트 추가/수정
+- [x] 단위 테스트에 SagaTrackerClient mock 추가
+- [ ] 통합 테스트 추가/수정 (통합 테스트 제외)
 
 ### 5.3 Payment Service (c4ang-payment-service)
-- [ ] `application.yml`에 saga 설정 추가 (`platform.saga.enabled: true`)
-- [ ] `PaymentInitializationService`에 기록 추가
+- [x] `application.yml`에 saga 설정 추가 (`platform.saga.enabled: false`, dev/prod에서 true)
+- [x] `CreatePaymentWaitService`에 기록 추가
   - Step: `PAYMENT_INITIALIZATION`, Status: `IN_PROGRESS`
+- [x] `RequestPaymentService`에 기록 추가
   - Step: `PAYMENT_INITIALIZED`, Status: `IN_PROGRESS`
-- [ ] `PaymentCompletionService`에 기록 추가
+- [x] `CompletePaymentService`에 기록 추가
   - Step: `PAYMENT_COMPLETED`, Status: `COMPLETED`
+- [x] `MarkPaymentFailedService`에 기록 추가
   - Step: `PAYMENT_FAILED`, Status: `FAILED`
-- [ ] `PaymentCancellationService`에 기록 추가
+- [x] `CancelPaymentService`에 기록 추가
   - Step: `PAYMENT_CANCELLED`, Status: `COMPENSATED`
-- [ ] `RefundService`에 기록 추가
+- [x] `CompletePaymentRefundService`에 기록 추가
   - Step: `PAYMENT_REFUNDED`, Status: `COMPENSATED`
-- [ ] 단위 테스트 추가/수정
-- [ ] 통합 테스트 추가/수정
+- [ ] 단위 테스트 추가/수정 (통합 테스트 제외)
+- [ ] 통합 테스트 추가/수정 (통합 테스트 제외)
 
 ### 5.4 Store Service (c4ang-store-service)
 - [ ] (향후 Saga 참여 시) SDK 연동 검토
