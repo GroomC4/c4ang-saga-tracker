@@ -15,10 +15,13 @@ build/
 
 # Kotlin
 *.class
-*.jar
 *.war
 *.ear
 *.nar
+
+# Build artifacts (but keep gradle wrapper)
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
 
 # Logs
 logs/
