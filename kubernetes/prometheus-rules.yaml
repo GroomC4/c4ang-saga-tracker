@@ -1,0 +1,50 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: saga-tracker-alerts
+  namespace: monitoring
+  labels:
+    release: prometheus
+spec:
+  groups:
+    - name: saga-tracker
+      rules:
+        # 실패 급증 알림
+        - alert: SagaFailureSpike
+          expr: increase(saga_failed_total[5m]) > 10
+          for: 2m
+          labels:
+            severity: warning
+          annotations:
+            summary: "Saga failure spike detected"
+            description: "{{ $value }} sagas failed in the last 5 minutes"
+
+        # Consumer Lag 알림
+        - alert: SagaTrackerConsumerLag
+          expr: saga_tracker_consumer_lag > 1000
+          for: 10m
+          labels:
+            severity: warning
+          annotations:
+            summary: "High consumer lag detected"
+            description: "Consumer lag is {{ $value }} messages"
+
+        # 서비스 다운 알림
+        - alert: SagaTrackerDown
+          expr: up{job="saga-tracker-api"} == 0
+          for: 1m
+          labels:
+            severity: critical
+          annotations:
+            summary: "Saga Tracker service is down"
+            description: "saga-tracker-api has been down for more than 1 minute"
+
+        # API 응답 지연 알림
+        - alert: SagaTrackerHighLatency
+          expr: histogram_quantile(0.99, rate(saga_tracker_api_latency_seconds_bucket[5m])) > 2
+          for: 5m
+          labels:
+            severity: warning
+          annotations:
+            summary: "High API latency detected"
+            description: "P99 latency is {{ $value }}s"

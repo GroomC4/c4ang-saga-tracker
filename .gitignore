@@ -1,0 +1,41 @@
+# Gradle
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
+.vscode/
+*.swp
+*.swo
+*~
+
+# Kotlin
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+
+# Logs
+logs/
+*.log
+spring.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Environment
+.env
+.env.local
+
+# Test outputs
+test-output/
+test-results/
+
+# Local development
+local-config/

@@ -1,0 +1,78 @@
+server:
+  port: 8086
+
+spring:
+  application:
+    name: saga-tracker-api
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:local}
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+  jpa:
+    hibernate:
+      ddl-auto: none
+      naming:
+        implicit-strategy: org.springframework.boot.orm.jpa.hibernate.SpringImplicitNamingStrategy
+        physical-strategy: org.hibernate.boot.model.naming.CamelCaseToUnderscoresNamingStrategy
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: false
+    open-in-view: false
+
+# ====================================
+# 기본 로그 레벨 (프로필 미지정 시)
+# ====================================
+logging:
+  level:
+    root: INFO
+    com.groom.saga: INFO
+    org.springframework: INFO
+    org.springframework.web: INFO
+    org.springframework.kafka: INFO
+    org.hibernate: WARN
+    org.hibernate.SQL: WARN
+  file:
+    path: ./logs
+
+# Swagger/OpenAPI
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui
+
+# Kafka 기본 설정 (프로필에서 오버라이드)
+kafka:
+  bootstrap-servers: localhost:9092
+  schema-registry:
+    url: http://localhost:8081
+  consumer:
+    group-id: saga-tracker-service
+    auto-offset-reset: earliest
+    enable-auto-commit: false
+    max-poll-records: 500
+  topics:
+    saga-tracker: c4ang.saga.tracker
+    saga-tracker-dlt: c4ang.saga.tracker.dlt
+
+# Prometheus metrics 설정
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus,metrics
+  endpoint:
+    health:
+      show-details: always
+      probes:
+        enabled: true
+  health:
+    livenessState:
+      enabled: true
+    readinessState:
+      enabled: true
+  metrics:
+    tags:
+      application: saga-tracker-api

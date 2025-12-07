@@ -1,0 +1,39 @@
+# ====================================
+# local 프로필 - 로컬 개발환경 (Docker Compose)
+# ====================================
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/saga_tracker
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 5
+      idle-timeout: 300000
+      connection-timeout: 30000
+      max-lifetime: 1800000
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+
+# ====================================
+# local 환경 로그 레벨 (상세 디버깅)
+# ====================================
+logging:
+  level:
+    com.groom.saga: DEBUG
+    org.hibernate.SQL: DEBUG
+    org.hibernate.orm.jdbc.bind: TRACE
+
+# Kafka 설정 (Docker Compose)
+kafka:
+  bootstrap-servers: localhost:9092
+  schema-registry:
+    url: http://localhost:8081

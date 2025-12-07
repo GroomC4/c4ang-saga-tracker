@@ -1,0 +1,58 @@
+# ====================================
+# prod 프로필 - 실제 운영환경 (EKS Production)
+# ====================================
+
+spring:
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+    hikari:
+      maximum-pool-size: ${DB_POOL_SIZE:20}
+      minimum-idle: ${DB_MIN_IDLE:10}
+      idle-timeout: 600000
+      connection-timeout: 30000
+      max-lifetime: 1800000
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        format_sql: false
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    show-sql: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: false
+
+# ====================================
+# prod 환경 로그 레벨 (최소한의 로그)
+# ====================================
+logging:
+  level:
+    root: WARN
+    com.groom.saga: INFO
+    org.springframework: WARN
+    org.springframework.web: WARN
+    org.springframework.kafka: WARN
+    org.hibernate: WARN
+    org.hibernate.SQL: OFF
+    org.hibernate.orm.jdbc.bind: OFF
+  file:
+    path: ${LOG_PATH:/var/log/saga-tracker}
+
+# Kafka 설정 (환경변수로 주입)
+kafka:
+  bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS}
+  schema-registry:
+    url: ${SCHEMA_REGISTRY_URL}
+  consumer:
+    group-id: ${KAFKA_CONSUMER_GROUP_ID:saga-tracker-service}
+    auto-offset-reset: earliest
+    enable-auto-commit: false
+    max-poll-records: ${KAFKA_MAX_POLL_RECORDS:1000}
+  topics:
+    saga-tracker: ${KAFKA_TOPIC_SAGA_TRACKER:c4ang.saga.tracker}
+    saga-tracker-dlt: ${KAFKA_TOPIC_SAGA_TRACKER_DLT:c4ang.saga.tracker.dlt}

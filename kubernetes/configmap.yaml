@@ -1,0 +1,9 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: saga-tracker-config
+  namespace: ecommerce
+data:
+  # k3d 기본값
+  kafka-bootstrap-servers: "kafka:9092"
+  schema-registry-url: "http://schema-registry:8081"
