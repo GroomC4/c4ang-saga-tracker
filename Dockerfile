@@ -8,8 +8,8 @@ RUN addgroup -S spring && adduser -S spring -G spring
 # JAR 파일 복사
 COPY saga-tracker-api/build/libs/saga-tracker-api-*.jar app.jar
 
-# 권한 변경
-RUN chown -R spring:spring /app
+# 로그 디렉토리 생성 및 권한 변경
+RUN mkdir -p /app/logs && chown -R spring:spring /app
 USER spring:spring
 
 # 환경 변수
