@@ -4,16 +4,10 @@
 
 spring:
   datasource:
-    master:
-      url: ${SPRING_DATASOURCE_MASTER_URL:jdbc:postgresql://saga-db:5436/saga_db}
-      username: ${SPRING_DATASOURCE_MASTER_USERNAME:postgres}
-      password: ${SPRING_DATASOURCE_MASTER_PASSWORD:postgres}
-      driver-class-name: org.postgresql.Driver
-    replica:
-      url: ${SPRING_DATASOURCE_REPLICA_URL:jdbc:postgresql://saga-db:5436/saga_db}
-      username: ${SPRING_DATASOURCE_REPLICA_USERNAME:postgres}
-      password: ${SPRING_DATASOURCE_REPLICA_PASSWORD:postgres}
-      driver-class-name: org.postgresql.Driver
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://saga-db:5436/saga_db}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 10
       minimum-idle: 5
