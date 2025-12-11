@@ -50,14 +50,14 @@ class SagaPersistenceAdapter(
         toDate: Instant?,
         pageable: Pageable
     ): Page<SagaInstance> {
-        return sagaInstanceRepository.search(
+        val spec = SagaInstanceSpecifications.buildSearchSpec(
             orderId = orderId,
             sagaType = sagaType,
             status = status,
             fromDate = fromDate,
-            toDate = toDate,
-            pageable = pageable
-        ).map { it.toDomain() }
+            toDate = toDate
+        )
+        return sagaInstanceRepository.findAll(spec, pageable).map { it.toDomain() }
     }
 
     @Transactional(readOnly = true)
